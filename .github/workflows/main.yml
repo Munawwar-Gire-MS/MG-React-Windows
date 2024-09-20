@@ -1,5 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
+# npm run build --if-present
+# npm run test --if-present
 
 name: Build and deploy Node.js app to Azure Web App - MG-React-Windows-Gitactions
 
@@ -24,17 +26,12 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: |
-            ./dist/**  # Adjust to your build output directory
-            !node_modules/**  # Exclude node_modules
-            !*.log            # Optionally exclude log files
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,5 +52,5 @@ jobs:
         with:
           app-name: 'MG-React-Windows-Gitactions'
           slot-name: 'Production'
-          package: './dist'  # Change this to your build output directory
+          package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_01545EAFED564F52915042F87B26568E }}
